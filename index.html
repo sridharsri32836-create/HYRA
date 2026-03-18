@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoTrack — Carbon Footprint Tracker</title>
+  <meta name="description" content="Log daily activities, estimate carbon emissions, and get AI-powered eco tips with EcoTrack." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>" />
+</head>
+<body>
+  <div id="particles-container"></div>
+
+  <!-- Sidebar (Desktop) -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 4C12 4 6 10 6 18c0 5 2.5 9.5 6.5 12.5L20 36l7.5-5.5C31.5 27.5 34 23 34 18c0-8-6-14-14-14z" fill="url(#leafGrad)" opacity="0.9"/>
+          <path d="M20 8v22M14 14l6-6M26 14l-6-6M12 20h16M14 26l6-6" stroke="#00ff88" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="20" cy="18" r="2" fill="#00d4ff"/>
+          <circle cx="14" cy="20" r="1.5" fill="#00d4ff" opacity="0.7"/>
+          <circle cx="26" cy="20" r="1.5" fill="#00d4ff" opacity="0.7"/>
+          <defs>
+            <linearGradient id="leafGrad" x1="6" y1="4" x2="34" y2="36" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#00ff88" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#00d4ff" stop-opacity="0.2"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-name">EcoTrack</span>
+        <span class="logo-tag">2026 Edition</span>
+      </div>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li><a href="index.html" class="nav-item active" id="nav-dashboard">
+        <span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span>
+      </a></li>
+      <li><a href="log.html" class="nav-item" id="nav-log">
+        <span class="nav-icon">📝</span><span class="nav-label">Log Activity</span>
+      </a></li>
+      <li><a href="insights.html" class="nav-item" id="nav-insights">
+        <span class="nav-icon">🤖</span><span class="nav-label">AI Insights</span>
+      </a></li>
+      <li><a href="goals.html" class="nav-item" id="nav-goals">
+        <span class="nav-icon">🏆</span><span class="nav-label">Goals</span>
+      </a></li>
+      <li><a href="history.html" class="nav-item" id="nav-history">
+        <span class="nav-icon">📅</span><span class="nav-label">History</span>
+      </a></li>
+      <li><a href="settings.html" class="nav-item" id="nav-settings">
+        <span class="nav-icon">⚙️</span><span class="nav-label">Settings</span>
+      </a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="co2-ticker-mini glass-card-sm" id="ticker-mini">
+        <div class="ticker-label">Global CO₂</div>
+        <div class="ticker-value" id="ticker-mini-val">429.3 ppm</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content" id="main-content">
+
+    <!-- Header Bar -->
+    <header class="page-header">
+      <div class="header-left">
+        <button class="menu-toggle" id="menu-toggle" aria-label="Menu">&#9776;</button>
+        <div>
+          <h1 class="page-title">Dashboard</h1>
+          <p class="page-subtitle" id="greeting-text">Good morning, Eco Warrior! 🌿</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="date-badge glass-card-sm" id="date-badge">
+          <span id="date-display">March 18, 2026</span>
+        </div>
+        <a href="log.html" class="btn-primary pulse-btn" id="quick-log-btn">
+          <span>＋</span> Log Activity
+        </a>
+      </div>
+    </header>
+
+    <!-- CO2 Global Ticker Banner -->
+    <section class="co2-ticker-banner animate-fade-in">
+      <div class="ticker-inner">
+        <div class="ticker-globe">🌍</div>
+        <div class="ticker-content">
+          <div class="ticker-title">Global Atmospheric CO₂</div>
+          <div class="ticker-main-val" id="ticker-main-val">429.3<span class="ticker-unit">ppm</span></div>
+        </div>
+        <div class="ticker-trend">
+          <span class="trend-up">↑ 2.8 ppm/yr</span>
+          <span class="trend-note">Highest in millions of years</span>
+        </div>
+        <div class="ticker-india">
+          <div class="india-flag">🇮🇳</div>
+          <div>
+            <div class="india-label">India Grid Intensity</div>
+            <div class="india-val">0.70 kg CO₂/kWh</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Row -->
+    <section class="stats-row animate-slide-up">
+      <div class="stat-card glass-card">
+        <div class="stat-header">
+          <span class="stat-icon">📅</span>
+          <span class="stat-period">Today</span>
+        </div>
+        <div class="stat-ring-wrap">
+          <svg class="ring-svg" viewBox="0 0 120 120" width="120" height="120">
+            <circle class="ring-bg" cx="60" cy="60" r="50" />
+            <circle class="ring-fill ring-today" cx="60" cy="60" r="50" id="ring-today" stroke="url(#ringGradToday)" />
+            <text x="60" y="55" class="ring-val" id="ring-today-val">0.0</text>
+            <text x="60" y="72" class="ring-subtext">kg CO₂</text>
+            <defs>
+              <linearGradient id="ringGradToday" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#00ff88"/>
+                <stop offset="100%" stop-color="#00d4ff"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="stat-goal-info" id="today-goal-info">Goal: <span id="today-goal-display">—</span></div>
+      </div>
+
+      <div class="stat-card glass-card">
+        <div class="stat-header">
+          <span class="stat-icon">📆</span>
+          <span class="stat-period">This Week</span>
+        </div>
+        <div class="stat-ring-wrap">
+          <svg class="ring-svg" viewBox="0 0 120 120" width="120" height="120">
+            <circle class="ring-bg" cx="60" cy="60" r="50" />
+            <circle class="ring-fill ring-week" cx="60" cy="60" r="50" id="ring-week" stroke="url(#ringGradWeek)" />
+            <text x="60" y="55" class="ring-val" id="ring-week-val">0.0</text>
+            <text x="60" y="72" class="ring-subtext">kg CO₂</text>
+            <defs>
+              <linearGradient id="ringGradWeek" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ffd700"/>
+                <stop offset="100%" stop-color="#ff9500"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="stat-goal-info" id="week-goal-info">Goal: <span id="week-goal-display">—</span></div>
+      </div>
+
+      <div class="stat-card glass-card">
+        <div class="stat-header">
+          <span class="stat-icon">🗓️</span>
+          <span class="stat-period">This Month</span>
+        </div>
+        <div class="stat-ring-wrap">
+          <svg class="ring-svg" viewBox="0 0 120 120" width="120" height="120">
+            <circle class="ring-bg" cx="60" cy="60" r="50" />
+            <circle class="ring-fill ring-month" cx="60" cy="60" r="50" id="ring-month" stroke="url(#ringGradMonth)" />
+            <text x="60" y="55" class="ring-val" id="ring-month-val">0.0</text>
+            <text x="60" y="72" class="ring-subtext">kg CO₂</text>
+            <defs>
+              <linearGradient id="ringGradMonth" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#00d4ff"/>
+                <stop offset="100%" stop-color="#7b2fff"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="stat-goal-info" id="month-goal-info">Goal: <span id="month-goal-display">—</span></div>
+      </div>
+
+      <!-- Equivalent Trees Card -->
+      <div class="stat-card glass-card trees-card">
+        <div class="stat-header">
+          <span class="stat-icon">🌳</span>
+          <span class="stat-period">Trees Equivalent</span>
+        </div>
+        <div class="trees-big" id="trees-num">0</div>
+        <div class="trees-sub">trees absorbing your monthly emissions</div>
+        <div class="trees-row" id="trees-row"><!-- tree emojis dynamically inserted --></div>
+      </div>
+    </section>
+
+    <!-- Motivational Banner + Awareness -->
+    <section class="mid-row animate-slide-up">
+      <!-- Awareness Rotating Banner -->
+      <div class="awareness-card glass-card">
+        <div class="awareness-header">
+          <span class="awareness-icon">💡</span>
+          <span class="awareness-title">Eco Awareness</span>
+          <div class="awareness-dots" id="awareness-dots"></div>
+        </div>
+        <div class="awareness-content" id="awareness-content">
+          <p class="awareness-fact" id="awareness-text">Loading...</p>
+        </div>
+        <div class="awareness-progress">
+          <div class="awareness-bar" id="awareness-bar"></div>
+        </div>
+      </div>
+
+      <!-- Motivational Card -->
+      <div class="motivational-card glass-card" id="motivational-card">
+        <div class="motive-header">
+          <span class="motive-icon" id="motive-icon">🌟</span>
+          <span class="motive-title">Your Impact</span>
+        </div>
+        <div class="motive-body" id="motive-body">
+          <p>Start logging your activities to see your personalized impact score!</p>
+        </div>
+        <div class="motive-cta">
+          <a href="log.html" class="btn-secondary">Log First Activity →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recent Activities -->
+    <section class="recent-section animate-slide-up">
+      <div class="section-header">
+        <h2 class="section-title">Recent Activities</h2>
+        <a href="history.html" class="see-all">See All →</a>
+      </div>
+      <div class="recent-list glass-card" id="recent-list">
+        <div class="empty-state">
+          <div class="empty-icon">📊</div>
+          <p>No activities logged yet.</p>
+          <a href="log.html" class="btn-primary">Log Your First Activity</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Category Breakdown -->
+    <section class="breakdown-section animate-slide-up" id="breakdown-section" style="display:none">
+      <div class="section-header">
+        <h2 class="section-title">This Month's Breakdown</h2>
+      </div>
+      <div class="breakdown-grid" id="breakdown-grid"></div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Nav (Mobile) -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <a href="index.html" class="bottom-item active">
+      <span class="bottom-icon">🏠</span><span class="bottom-label">Home</span>
+    </a>
+    <a href="log.html" class="bottom-item">
+      <span class="bottom-icon">📝</span><span class="bottom-label">Log</span>
+    </a>
+    <a href="insights.html" class="bottom-item">
+      <span class="bottom-icon">🤖</span><span class="bottom-label">AI</span>
+    </a>
+    <a href="goals.html" class="bottom-item">
+      <span class="bottom-icon">🏆</span><span class="bottom-label">Goals</span>
+    </a>
+    <a href="history.html" class="bottom-item">
+      <span class="bottom-icon">📅</span><span class="bottom-label">History</span>
+    </a>
+  </nav>
+
+  <!-- Mobile FAB -->
+  <a href="log.html" class="fab" id="fab" aria-label="Log Activity">
+    <span>＋</span>
+  </a>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

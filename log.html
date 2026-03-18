@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log Activity — EcoTrack</title>
+  <meta name="description" content="Log daily activities and estimate your carbon emissions with EcoTrack." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>" />
+</head>
+<body>
+  <div id="particles-container"></div>
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <path d="M20 4C12 4 6 10 6 18c0 5 2.5 9.5 6.5 12.5L20 36l7.5-5.5C31.5 27.5 34 23 34 18c0-8-6-14-14-14z" fill="url(#lg2)" opacity="0.9"/>
+          <path d="M20 8v22M14 14l6-6M26 14l-6-6M12 20h16M14 26l6-6" stroke="#00ff88" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="20" cy="18" r="2" fill="#00d4ff"/>
+          <defs><linearGradient id="lg2" x1="6" y1="4" x2="34" y2="36" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00ff88" stop-opacity="0.3"/><stop offset="100%" stop-color="#00d4ff" stop-opacity="0.2"/></linearGradient></defs>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-name">EcoTrack</span>
+        <span class="logo-tag">2026 Edition</span>
+      </div>
+    </div>
+    <ul class="sidebar-nav">
+      <li><a href="index.html" class="nav-item" id="nav-dashboard"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></a></li>
+      <li><a href="log.html" class="nav-item active" id="nav-log"><span class="nav-icon">📝</span><span class="nav-label">Log Activity</span></a></li>
+      <li><a href="insights.html" class="nav-item" id="nav-insights"><span class="nav-icon">🤖</span><span class="nav-label">AI Insights</span></a></li>
+      <li><a href="goals.html" class="nav-item" id="nav-goals"><span class="nav-icon">🏆</span><span class="nav-label">Goals</span></a></li>
+      <li><a href="history.html" class="nav-item" id="nav-history"><span class="nav-icon">📅</span><span class="nav-label">History</span></a></li>
+      <li><a href="settings.html" class="nav-item" id="nav-settings"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></a></li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="co2-ticker-mini glass-card-sm"><div class="ticker-label">Global CO₂</div><div class="ticker-value" id="ticker-mini-val">429.3 ppm</div></div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <header class="page-header">
+      <div class="header-left">
+        <button class="menu-toggle" id="menu-toggle">&#9776;</button>
+        <div>
+          <h1 class="page-title">Log Activity</h1>
+          <p class="page-subtitle">Track your carbon footprint in real-time</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="date-badge glass-card-sm"><span id="date-display"></span></div>
+      </div>
+    </header>
+
+    <div class="log-container animate-fade-in">
+
+      <!-- CO2 Live Preview -->
+      <div class="co2-preview">
+        <div class="co2-preview-label">Estimated CO₂ Emission</div>
+        <div class="co2-preview-val" id="co2-preview-val">0.00</div>
+        <div class="co2-preview-unit">kg CO₂ equivalent</div>
+      </div>
+
+      <!-- Voice Logging -->
+      <button class="voice-btn" id="voice-btn" onclick="toggleVoice()">
+        <span id="voice-icon">🎙️</span>
+        <span id="voice-label">Voice Log — Speak your activities</span>
+      </button>
+      <div class="voice-transcript glass-card-sm" id="voice-transcript">
+        <em id="voice-transcript-text">Listening...</em>
+      </div>
+
+      <!-- Category Tabs -->
+      <div class="tab-bar" id="category-tabs">
+        <button class="tab-btn active" data-cat="transport" onclick="selectCategory('transport')">
+          <span class="tab-icon">🚗</span><span class="tab-label">Transport</span>
+        </button>
+        <button class="tab-btn" data-cat="food" onclick="selectCategory('food')">
+          <span class="tab-icon">🍽️</span><span class="tab-label">Food</span>
+        </button>
+        <button class="tab-btn" data-cat="energy" onclick="selectCategory('energy')">
+          <span class="tab-icon">⚡</span><span class="tab-label">Energy</span>
+        </button>
+        <button class="tab-btn" data-cat="shopping" onclick="selectCategory('shopping')">
+          <span class="tab-icon">🛍️</span><span class="tab-label">Shopping</span>
+        </button>
+        <button class="tab-btn" data-cat="water" onclick="selectCategory('water')">
+          <span class="tab-icon">💧</span><span class="tab-label">Water</span>
+        </button>
+        <button class="tab-btn" data-cat="custom" onclick="selectCategory('custom')">
+          <span class="tab-icon">🏭</span><span class="tab-label">Custom</span>
+        </button>
+      </div>
+
+      <!-- Dynamic Form -->
+      <div class="glass-card" style="padding: 28px;">
+        <div class="form-group">
+          <label class="form-label">Activity Type</label>
+          <select class="form-select" id="sub-select" onchange="updateSubOption()">
+            <option value="">Select activity...</option>
+          </select>
+        </div>
+
+        <div id="quantity-section" style="display:none;">
+          <div class="quantity-row">
+            <div class="form-group">
+              <label class="form-label">Quantity</label>
+              <input type="number" class="form-input" id="quantity-input" min="0" step="any"
+                placeholder="0" oninput="updatePreview()" />
+            </div>
+            <div class="form-group" style="min-width:100px; max-width: 140px;">
+              <label class="form-label">Unit</label>
+              <input type="text" class="form-input" id="unit-display" readonly style="color: var(--text-muted);" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Note (optional)</label>
+            <input type="text" class="form-input" id="note-input" placeholder="e.g. Morning commute to office" />
+          </div>
+
+          <div class="factor-info glass-card-sm" id="factor-info" style="padding: 12px 16px; margin-bottom: 18px; font-size: 0.82rem; color: var(--text-muted);"></div>
+        </div>
+
+        <!-- Custom Mode -->
+        <div id="custom-section" style="display:none;">
+          <div class="form-group">
+            <label class="form-label">Activity Name</label>
+            <input type="text" class="form-input" id="custom-name" placeholder="e.g. Burning fireworks" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Direct CO₂ (kg)</label>
+            <input type="number" class="form-input" id="custom-co2" min="0" step="0.01"
+              placeholder="0.00" oninput="updateCustomPreview()" />
+          </div>
+        </div>
+
+        <button class="btn-primary" id="submit-btn" onclick="submitLog()" style="width:100%; justify-content:center; padding: 14px; font-size: 1rem;">
+          ✅ Save Activity
+        </button>
+      </div>
+
+      <!-- Quick Log Suggestions -->
+      <div class="section-header" style="margin-top: 28px;">
+        <h2 class="section-title">Quick Log</h2>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Tap to pre-fill</span>
+      </div>
+      <div class="breakdown-grid" id="quick-log-grid">
+        <!-- Quick options injected by JS -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Bottom Nav (Mobile) -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <a href="index.html" class="bottom-item"><span class="bottom-icon">🏠</span><span class="bottom-label">Home</span></a>
+    <a href="log.html" class="bottom-item active"><span class="bottom-icon">📝</span><span class="bottom-label">Log</span></a>
+    <a href="insights.html" class="bottom-item"><span class="bottom-icon">🤖</span><span class="bottom-label">AI</span></a>
+    <a href="goals.html" class="bottom-item"><span class="bottom-icon">🏆</span><span class="bottom-label">Goals</span></a>
+    <a href="history.html" class="bottom-item"><span class="bottom-icon">📅</span><span class="bottom-label">History</span></a>
+  </nav>
+
+  <script src="js/app.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/log.js"></script>
+</body>
+</html>

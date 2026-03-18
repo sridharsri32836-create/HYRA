@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Goals & Gamification — EcoTrack</title>
+  <meta name="description" content="Set carbon footprint goals, earn badges, and track your streak." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>" />
+</head>
+<body>
+  <div id="particles-container"></div>
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M20 4C12 4 6 10 6 18c0 5 2.5 9.5 6.5 12.5L20 36l7.5-5.5C31.5 27.5 34 23 34 18c0-8-6-14-14-14z" fill="url(#lg4)" opacity="0.9"/><path d="M20 8v22M14 14l6-6M26 14l-6-6M12 20h16M14 26l6-6" stroke="#00ff88" stroke-width="1.5" stroke-linecap="round"/><circle cx="20" cy="18" r="2" fill="#00d4ff"/><defs><linearGradient id="lg4" x1="6" y1="4" x2="34" y2="36" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00ff88" stop-opacity="0.3"/><stop offset="100%" stop-color="#00d4ff" stop-opacity="0.2"/></linearGradient></defs></svg></div>
+      <div class="logo-text"><span class="logo-name">EcoTrack</span><span class="logo-tag">2026 Edition</span></div>
+    </div>
+    <ul class="sidebar-nav">
+      <li><a href="index.html" class="nav-item"><span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span></a></li>
+      <li><a href="log.html" class="nav-item"><span class="nav-icon">📝</span><span class="nav-label">Log Activity</span></a></li>
+      <li><a href="insights.html" class="nav-item"><span class="nav-icon">🤖</span><span class="nav-label">AI Insights</span></a></li>
+      <li><a href="goals.html" class="nav-item active"><span class="nav-icon">🏆</span><span class="nav-label">Goals</span></a></li>
+      <li><a href="history.html" class="nav-item"><span class="nav-icon">📅</span><span class="nav-label">History</span></a></li>
+      <li><a href="settings.html" class="nav-item"><span class="nav-icon">⚙️</span><span class="nav-label">Settings</span></a></li>
+    </ul>
+    <div class="sidebar-footer"><div class="co2-ticker-mini glass-card-sm"><div class="ticker-label">Global CO₂</div><div class="ticker-value" id="ticker-mini-val">429.3 ppm</div></div></div>
+  </nav>
+
+  <main class="main-content">
+    <header class="page-header">
+      <div class="header-left">
+        <button class="menu-toggle" id="menu-toggle">&#9776;</button>
+        <div><h1 class="page-title">Goals & Badges</h1><p class="page-subtitle">Set targets, earn rewards, build momentum 🏆</p></div>
+      </div>
+      <div class="header-right"><div class="date-badge glass-card-sm"><span id="date-display"></span></div></div>
+    </header>
+
+    <div class="goals-grid animate-fade-in">
+      <!-- Goal Setter -->
+      <div class="glass-card" style="padding:28px;">
+        <h2 style="font-size:1rem;font-weight:700;margin-bottom:20px;color:var(--gold);">🎯 Set Your Goals</h2>
+        <div class="form-group">
+          <label class="form-label">Daily CO₂ Goal (kg)</label>
+          <input type="number" class="form-input" id="goal-daily" min="1" max="100" step="0.5" value="5" />
+          <small style="color:var(--text-muted);font-size:0.75rem;">Avg Indian: ~4.7 kg/day</small>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Monthly CO₂ Goal (kg)</label>
+          <input type="number" class="form-input" id="goal-monthly" min="10" max="3000" step="5" value="50" />
+          <small style="color:var(--text-muted);font-size:0.75rem;">Net Zero 2050 target: ≈50 kg/month</small>
+        </div>
+        <button class="btn-primary" onclick="saveGoals()" style="width:100%;justify-content:center;margin-top:8px;">
+          💾 Save Goals
+        </button>
+        <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border-glass);">
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;">Progress toward monthly goal:</div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-size:0.88rem;font-weight:600;" id="goal-progress-label">0 / 0 kg</span>
+            <span style="font-size:0.82rem;color:var(--neon-green);" id="goal-progress-pct">0%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;">
+            <div id="goal-progress-bar" style="height:100%;border-radius:4px;background:linear-gradient(90deg,var(--neon-green),var(--teal));width:0%;transition:width 1s ease;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Streak Card -->
+      <div class="glass-card" style="padding:28px;">
+        <h2 style="font-size:1rem;font-weight:700;margin-bottom:8px;color:var(--gold);">🔥 Current Streak</h2>
+        <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:16px;">Days you've logged at least one activity</p>
+        <div class="streak-display">
+          <div class="streak-fire">🔥</div>
+          <div>
+            <div class="streak-num" id="streak-num">0</div>
+            <div class="streak-label">day streak</div>
+          </div>
+        </div>
+        <div style="margin-top:16px;">
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:10px;">Last 7 days</div>
+          <div style="display:flex;gap:6px;" id="streak-week"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Badges -->
+    <section class="animate-slide-up" style="margin-top:24px;">
+      <div class="section-header">
+        <h2 class="section-title">🏅 Achievements</h2>
+        <span style="font-size:0.82rem;color:var(--text-muted);" id="badge-count">0 / 8 earned</span>
+      </div>
+      <div class="badges-grid" id="badges-grid"></div>
+    </section>
+
+    <!-- Milestone Progress -->
+    <section class="animate-slide-up" style="margin-top:24px;">
+      <div class="section-header"><h2 class="section-title">📈 Milestones</h2></div>
+      <div class="glass-card" style="padding:24px;" id="milestones-list"></div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" id="bottom-nav">
+    <a href="index.html" class="bottom-item"><span class="bottom-icon">🏠</span><span class="bottom-label">Home</span></a>
+    <a href="log.html" class="bottom-item"><span class="bottom-icon">📝</span><span class="bottom-label">Log</span></a>
+    <a href="insights.html" class="bottom-item"><span class="bottom-icon">🤖</span><span class="bottom-label">AI</span></a>
+    <a href="goals.html" class="bottom-item active"><span class="bottom-icon">🏆</span><span class="bottom-label">Goals</span></a>
+    <a href="history.html" class="bottom-item"><span class="bottom-icon">📅</span><span class="bottom-label">History</span></a>
+  </nav>
+  <a href="log.html" class="fab">＋</a>
+
+  <script src="js/app.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/goals.js"></script>
+</body>
+</html>
